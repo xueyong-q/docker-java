@@ -1,6 +1,6 @@
 ## 简介
 
-本项目是一个基于 Docker 的 JAVA 开发环境，jdk 为 openjdk 11，maven 为 3.6 版本。
+本项目是一个基于 Docker 的 JAVA 开发环境，jdk 为 openjdk 11，maven 为 3.6 版本，tomcat 版本为 9.0.36。
 
 ## 使用
 
@@ -20,8 +20,13 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 ```
 >注意：-DgroupId=组织名 公司网址的反写 + 项目名 -DartifactId=项目名-模块名 -Dversion=版本号 -Dpackage=代码所存在的包名
 
+启动 tomcat:
+首先需要执行 `sudo su` 切换成 root 用户，然后再执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
+
+启动后则可以使用 8088 端口访问 tomcat，如：http://localhost:8088。
+
 ## 更换版本
 
 如果需要更换 JDK 的版本只需要修改 devcontainer.json 和 Dockerfile 这两个文件。
 * devcontainer.json 文件修改 java.home 配置项，将地址更换成对应版本的地址即可，如：当前版本是 11，更换为 8 版本的话只需将 11 改为 8 即可。
-* Dockerfile 文件修改 FROM 配置项，也是换成对应版本镜像即可，如：当前版本是 11，更换为 8 版本的话也是将 11 改为 8 即可。
+* Dockerfile 文件修改 FROM 配置项，也是换成对应版本镜像即可，如：当前版本是 11，更换为 8 版本的话也是将 11 改为 8 即可，另还需要设置 ARG 配置项的 JAVA_HOME 环境变量地址，该值应与 java.home 配置一致。
