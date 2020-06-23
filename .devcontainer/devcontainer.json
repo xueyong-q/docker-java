@@ -12,7 +12,8 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"pivotal.vscode-boot-dev-pack",
-		"dotjoshjohnson.xml"
+		"dotjoshjohnson.xml",
+		"adashen.vscode-tomcat"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

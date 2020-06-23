@@ -17,8 +17,9 @@ ARG JAVA_HOME=/usr/local/openjdk-11
 ARG MAVEN_HOME=/usr/share/maven
 ARG CATALINA_HOME=/usr/local/tomcat
 
-COPY maven-settings.xml /usr/share/maven/ref/
 ENV MAVEN_CONFIG /root/.m2
+
+COPY maven-settings.xml ${MAVEN_HOME}/ref/
 
 # Configure apt
 ENV DEBIAN_FRONTEND=noninteractive
@@ -37,27 +38,27 @@ RUN apt-get update \
     && apt-get -y install git openssh-client less iproute2 procps curl lsb-release vim jq \
     #
     # Install Maven
-    && mkdir -p /usr/share/maven /usr/share/maven/ref \
+    && mkdir -p ${MAVEN_HOME} ${MAVEN_HOME}/ref \
     && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && echo "${MAVEN_SHA} /tmp/apache-maven.tar.gz" | sha512sum -c - \
-    && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
+    && tar -xzf /tmp/apache-maven.tar.gz -C ${MAVEN_HOME} --strip-components=1 \
     && rm -f /tmp/apache-maven.tar.gz \
-    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
+    && ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn \
     #
     # Install Tomcat
-    && mkdir /usr/local/tomcat \
+    && mkdir ${CATALINA_HOME} \
     && curl -fsSL -o /tmp/apache-tomcat.tar.gz https://mirrors.bfsu.edu.cn/apache/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
     && echo "${TOMCAT_SHA} /tmp/apache-tomcat.tar.gz" | sha512sum -c - \
-    && tar -xzf /tmp/apache-tomcat.tar.gz -C /usr/local/tomcat --strip-components=1 \
-    && chmod +rx -R /usr/local/tomcat \
+    && tar -xzf /tmp/apache-tomcat.tar.gz -C ${CATALINA_HOME} --strip-components=1 \
+    && chown ${USERNAME}:${USERNAME} -R ${CATALINA_HOME} \
     && rm -f /tmp/apache-tomcat.tar.gz \
-    && ln -s /usr/local/tomcat/bin/startup.sh /usr/bin/tomcatup \
-    && ln -s /usr/local/tomcat/bin/shutdown.sh /usr/bin/tomcatdown \
+    && ln -s ${CATALINA_HOME}/bin/startup.sh /usr/bin/tomcatup \
+    && ln -s ${CATALINA_HOME}/bin/shutdown.sh /usr/bin/tomcatdown \
     #
     # 设置全局环境变量
-    && echo "export JAVA_HOME=${JAVA_HOME}" >> /etc/environment \
-    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /etc/environment \
-    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /etc/environment \
+    && echo "export JAVA_HOME=${JAVA_HOME}" >> /etc/profile \
+    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /etc/profile \
+    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /etc/profile \
     #
     # Clean up
     && apt-get autoremove -y \

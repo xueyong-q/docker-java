@@ -21,7 +21,7 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 >注意：-DgroupId=组织名 公司网址的反写 + 项目名 -DartifactId=项目名-模块名 -Dversion=版本号 -Dpackage=代码所存在的包名
 
 启动 tomcat:
-首先需要执行 `sudo su` 切换成 root 用户，然后再执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
+执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
 
 启动后则可以使用 8088 端口访问 tomcat，如：http://localhost:8088。
 
