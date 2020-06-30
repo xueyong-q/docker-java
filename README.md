@@ -25,6 +25,9 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 
 启动后则可以使用 8088 端口访问 tomcat，如：http://localhost:8088。
 
+或者使用 tomcat for java 扩展管理 tomcat:
+如果遇到无法添加 tomcat 或者无法启动，则可以将该扩展关闭然后再重启一下扩展就可以解决。
+
 ## 更换版本
 
 如果需要更换 JDK 的版本只需要修改 devcontainer.json 和 Dockerfile 这两个文件。
