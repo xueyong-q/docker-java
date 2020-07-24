@@ -12,10 +12,12 @@ ARG MAVEN_VERSION=3.6.3
 ARG MAVEN_SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
 ARG TOMCAT_VERSION=9.0.36
 ARG TOMCAT_SHA=75e16a00e02782961a7753dc9afaf6d209afa5f22d320319778fd0ee5e3b47009da522ac735599f1739bff6e809c2da9081dbbd4b8de54a82cf5b8cfbd8030ff
+ARG GRADLE_VERSION=6.5.1
 
 ARG JAVA_HOME=/usr/local/openjdk-11
 ARG MAVEN_HOME=/usr/share/maven
 ARG CATALINA_HOME=/usr/local/tomcat
+ARG GRADLE_HOME=/usr/local/gradle
 
 ENV MAVEN_CONFIG /root/.m2
 
@@ -35,7 +37,7 @@ RUN apt-get update \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
     # Verify git, needed tools installed
-    && apt-get -y install git openssh-client less iproute2 procps curl lsb-release vim jq \
+    && apt-get -y install git openssh-client less iproute2 procps curl lsb-release unzip vim jq \
     #
     # Install Maven
     && mkdir -p ${MAVEN_HOME} ${MAVEN_HOME}/ref \
@@ -55,10 +57,18 @@ RUN apt-get update \
     && ln -s ${CATALINA_HOME}/bin/startup.sh /usr/bin/tomcatup \
     && ln -s ${CATALINA_HOME}/bin/shutdown.sh /usr/bin/tomcatdown \
     #
-    # 设置全局环境变量
-    && echo "export JAVA_HOME=${JAVA_HOME}" >> /etc/profile \
-    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /etc/profile \
-    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /etc/profile \
+    # Install Gradle
+    && curl -fsSL -o /tmp/gradle-bin.zip https://downloads.gradle-dn.com/distributions/gradle-${GRADLE_VERSION}-bin.zip \
+    && unzip -o /tmp/gradle-bin.zip -d /tmp \
+    && mv /tmp/gradle-${GRADLE_VERSION} ${GRADLE_HOME} \
+    && rm -rf /tmp/gradle-* \
+    #
+    # 设置环境变量
+    && echo "export JAVA_HOME=${JAVA_HOME}" >> /home/${USERNAME}/.bashrc \
+    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /home/${USERNAME}/.bashrc \
+    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /home/${USERNAME}/.bashrc \
+    && echo "export GRADLE_HOME=${GRADLE_HOME}" >> /home/${USERNAME}/.bashrc \
+    && echo "export PATH=${GRADLE_HOME}/bin:\$PATH" >> /home/${USERNAME}/.bashrc \
     #
     # Clean up
     && apt-get autoremove -y \
