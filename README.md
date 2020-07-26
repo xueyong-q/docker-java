@@ -38,7 +38,7 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 启动后则可以使用 8080 端口访问 tomcat，如：http://localhost:8080。  
 >如要修改端口可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项修改端口映射，配置值如：`<主机端口>:<容器内端口>`。  
 
-或者使用 tomcat for java 扩展管理 tomcat:
+或者使用 tomcat for java 扩展管理 tomcat:  
 如果遇到无法添加 tomcat 或者无法启动，则可以将该扩展关闭然后再重启一下扩展就可以解决。
 
 ## 更换版本
