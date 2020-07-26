@@ -1,13 +1,11 @@
 {
 	"name": "Java Sample",
 	"dockerFile": "Dockerfile",
-
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
 		"java.home": "/usr/local/openjdk-11"
 	},
-	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"vscjava.vscode-java-pack",
@@ -15,16 +13,18 @@
 		"dotjoshjohnson.xml",
 		"adashen.vscode-tomcat"
 	],
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-	
-	// 将容器内8080转发映射到主机8088
-	"appPort": ["8088:8080"],
-
+	// 将容器内 8080 转发映射到主机 8080
+	"appPort": [
+		"8080:8080"
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "java -version",
-
 	// Comment out to run as root instead.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+	// 将镜像添加到 database_app 网络
+	"runArgs": [
+		"--network=database_app"
+	]
 }

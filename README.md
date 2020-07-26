@@ -1,8 +1,20 @@
 ## 简介
 
-本项目是一个基于 Docker 的 JAVA 开发环境，jdk 为 openjdk 11，maven 为 3.6 版本，tomcat 版本为 9.0.36。
+本项目是一个基于 Docker 的 JAVA 开发环境，安装应用有Openjdk、Maven、Tomcat 和 Gradle 默认安装版本如下。
+
+| 应用    | 版本   |
+| ------- | ------ |
+| Openjdk | 11     |
+| Maven   | 3.6    |
+| Tomcat  | 9.0.36 |
+| Gradle  | 6.5.1  |
 
 ## 使用
+
+注意：该项目容器默认会添加到 database_app 网络，如果 database_app 网络不存在则会无法构建，解决方法如：  
+1. 删除 `.devcontainer\devcontainer.json` 配置文件中 `runArgs` 配置项的 "--network=database_app" 即可。  
+2. 添加 database_app 网络，添加命令 `docker network create database_app`。另可以部署一个数据库 [
+docker-database 项目](https://github.com/xueyong-q/docker-database.git)。
 
 首先使用本项目前需要安装 Docker、Visual Studio Code 以及 Remote - Containers 插件。  
 然后将本项目克隆至本地, 克隆完成后就可以开始启动容器了。   
@@ -23,7 +35,8 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 启动 tomcat:
 执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
 
-启动后则可以使用 8088 端口访问 tomcat，如：http://localhost:8088。
+启动后则可以使用 8080 端口访问 tomcat，如：http://localhost:8080。  
+>如要修改端口可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项修改端口映射，配置值如：`<主机端口>:<容器内端口>`。  
 
 或者使用 tomcat for java 扩展管理 tomcat:
 如果遇到无法添加 tomcat 或者无法启动，则可以将该扩展关闭然后再重启一下扩展就可以解决。
