@@ -15,7 +15,7 @@ ARG TOMCAT_SHA=75e16a00e02782961a7753dc9afaf6d209afa5f22d320319778fd0ee5e3b47009
 ARG GRADLE_VERSION=6.5.1
 
 ARG JAVA_HOME=/usr/local/openjdk-11
-ARG MAVEN_HOME=/usr/share/maven
+ARG MAVEN_HOME=/usr/local/maven
 ARG CATALINA_HOME=/usr/local/tomcat
 ARG GRADLE_HOME=/usr/local/gradle
 
@@ -39,13 +39,16 @@ RUN apt-get update \
     # Verify git, needed tools installed
     && apt-get -y install git openssh-client less iproute2 procps curl lsb-release unzip vim jq \
     #
+    # add bin dir
+    && mkdir /home/${USERNAME}/bin \
+    #
     # Install Maven
     && mkdir -p ${MAVEN_HOME} ${MAVEN_HOME}/ref \
     && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && echo "${MAVEN_SHA} /tmp/apache-maven.tar.gz" | sha512sum -c - \
     && tar -xzf /tmp/apache-maven.tar.gz -C ${MAVEN_HOME} --strip-components=1 \
     && rm -f /tmp/apache-maven.tar.gz \
-    && ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn \
+    && ln -s ${MAVEN_HOME}/bin/mvn /home/${USERNAME}/bin/mvn \
     #
     # Install Tomcat
     && mkdir ${CATALINA_HOME} \
@@ -54,8 +57,8 @@ RUN apt-get update \
     && tar -xzf /tmp/apache-tomcat.tar.gz -C ${CATALINA_HOME} --strip-components=1 \
     && chown ${USERNAME}:${USERNAME} -R ${CATALINA_HOME} \
     && rm -f /tmp/apache-tomcat.tar.gz \
-    && ln -s ${CATALINA_HOME}/bin/startup.sh /usr/bin/tomcatup \
-    && ln -s ${CATALINA_HOME}/bin/shutdown.sh /usr/bin/tomcatdown \
+    && ln -s ${CATALINA_HOME}/bin/startup.sh /home/${USERNAME}/bin/tomcatup \
+    && ln -s ${CATALINA_HOME}/bin/shutdown.sh /home/${USERNAME}/bin/tomcatdown \
     #
     # Install Gradle
     && curl -fsSL -o /tmp/gradle-bin.zip https://downloads.gradle-dn.com/distributions/gradle-${GRADLE_VERSION}-bin.zip \
@@ -69,6 +72,7 @@ RUN apt-get update \
     && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /home/${USERNAME}/.bashrc \
     && echo "export GRADLE_HOME=${GRADLE_HOME}" >> /home/${USERNAME}/.bashrc \
     && echo "export PATH=${GRADLE_HOME}/bin:\$PATH" >> /home/${USERNAME}/.bashrc \
+    && echo "export PATH=/home/${USERNAME}/bin:\$PATH" >> /home/${USERNAME}/.bashrc \
     #
     # Clean up
     && apt-get autoremove -y \
