@@ -10,8 +10,11 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"pivotal.vscode-boot-dev-pack",
-		"dotjoshjohnson.xml",
-		"adashen.vscode-tomcat"
+		"redhat.vscode-xml",
+		"redhat.vscode-community-server-connector",
+		"yzhang.markdown-all-in-one",
+		"sonarsource.sonarlint-vscode",
+		"shengchen.vscode-checkstyle"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
