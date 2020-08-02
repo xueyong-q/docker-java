@@ -4,27 +4,28 @@ FROM openjdk:11-jdk
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
 # will be updated to match your local UID/GID (when using the dockerFile property).
 # See https://aka.ms/vscode-remote/containers/non-root-user for details.
+ENV LANG C.UTF-8
+ENV MAVEN_CONFIG /root/.m2
+
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 ARG MAVEN_VERSION=3.6.3
 ARG MAVEN_SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
+ARG MAVEN_HOME=/usr/local/maven
+
 ARG TOMCAT_VERSION=9.0.36
 ARG TOMCAT_SHA=75e16a00e02782961a7753dc9afaf6d209afa5f22d320319778fd0ee5e3b47009da522ac735599f1739bff6e809c2da9081dbbd4b8de54a82cf5b8cfbd8030ff
-ARG GRADLE_VERSION=6.5.1
+ARG CATALINA_HOME=/usr/local/tomcat
 
 ARG JAVA_HOME=/usr/local/openjdk-11
-ARG MAVEN_HOME=/usr/local/maven
-ARG CATALINA_HOME=/usr/local/tomcat
+ARG GRADLE_VERSION=6.5.1
 ARG GRADLE_HOME=/usr/local/gradle
-
-ENV MAVEN_CONFIG /root/.m2
 
 COPY maven-settings.xml ${MAVEN_HOME}/ref/
 
 # Configure apt
-ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
     #
@@ -78,5 +79,3 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
-
-ENV DEBIAN_FRONTEND=dialog

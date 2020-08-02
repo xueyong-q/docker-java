@@ -20,10 +20,10 @@
 1. 删除 `.devcontainer\devcontainer.json` 配置文件中 `runArgs` 配置项的 "--network=database_app" 即可。  
 2. 添加 database_app 网络，添加命令 `docker network create database_app`。另可以部署一个数据库 [docker-database 项目](https://github.com/xueyong-q/docker-database.git)。  
 
-首先打开 VSCode，操作如下。  
+首先使用 VSCode 打开本项目，操作如下。   
 ![](.devcontainer/image/image-1.jpg)
 
-然后选择本项目。  
+然后选择在容器中重新打开。  
 ![](.devcontainer/image/image-2.jpg)
 
 最后等待项目启动。
