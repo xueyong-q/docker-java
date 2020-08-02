@@ -1,21 +1,11 @@
 {
-	"name": "Java Sample",
+	"name": "Java",
 	"dockerFile": "Dockerfile",
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
 		"java.home": "/usr/local/openjdk-11"
 	},
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"vscjava.vscode-java-pack",
-		"pivotal.vscode-boot-dev-pack",
-		"redhat.vscode-xml",
-		"redhat.vscode-community-server-connector",
-		"yzhang.markdown-all-in-one",
-		"sonarsource.sonarlint-vscode",
-		"shengchen.vscode-checkstyle"
-	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// 将容器内 8080 转发映射到主机 8080
@@ -26,6 +16,16 @@
 	// "postCreateCommand": "java -version",
 	// Comment out to run as root instead.
 	"remoteUser": "vscode",
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"vscjava.vscode-java-pack",
+		"pivotal.vscode-boot-dev-pack",
+		"redhat.vscode-xml",
+		"redhat.vscode-community-server-connector",
+		"yzhang.markdown-all-in-one",
+		"sonarsource.sonarlint-vscode",
+		"shengchen.vscode-checkstyle"
+	],
 	// 将镜像添加到 database_app 网络
 	"runArgs": [
 		"--network=database_app"
