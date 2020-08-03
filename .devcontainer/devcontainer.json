@@ -8,9 +8,9 @@
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-	// 将容器内 8080 转发映射到主机 8080
+	// 将容器内 8080 转发映射到主机 80
 	"appPort": [
-		"8080:8080"
+		"80:8080"
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "java -version",

@@ -37,8 +37,8 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 启动 tomcat:
 执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
 
-启动后则可以使用 8080 端口访问 tomcat，如：http://localhost:8080。  
->如要修改端口可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项修改端口映射，配置值如：`<主机端口>:<容器内端口>`。  
+启动后则可以使用主机的 http://localhost 访问 tomcat。  
+>如要修改端口映射，可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项，配置值如：`<主机端口>:<容器内端口>`。  
 
 或者使用 Community Server Connectors 扩展管理 tomcat。  
 
