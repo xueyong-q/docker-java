@@ -24,7 +24,8 @@
 		"redhat.vscode-community-server-connector",
 		"yzhang.markdown-all-in-one",
 		"sonarsource.sonarlint-vscode",
-		"shengchen.vscode-checkstyle"
+		"shengchen.vscode-checkstyle",
+		"Gruntfuggly.todo-tree"
 	],
 	// 将镜像添加到 database_app 网络
 	"runArgs": [
