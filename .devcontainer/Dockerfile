@@ -15,8 +15,8 @@ ARG MAVEN_VERSION=3.6.3
 ARG MAVEN_SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
 ARG MAVEN_HOME=/usr/local/maven
 
-ARG TOMCAT_VERSION=9.0.39
-ARG TOMCAT_SHA=307ca646bac267e529fb0862278f7133fe80813f0af64a44aed949f4c7a9a98aeb9bd7f08b087645b40c6fefdd3a7fe519e4858a3dbf0a19c38c53704f92b575
+ARG TOMCAT_VERSION=9.0.40
+ARG TOMCAT_SHA=a37c787b659e7123363ea20ff601a2fb5d289d2c0d57d497d301af9e9f316629aca3d406d7d54e7b263fbdd725e0ed29456c10b5586b7e994a50eaa7b07312ec
 ARG CATALINA_HOME=/usr/local/tomcat
 
 ARG JAVA_HOME=/usr/local/openjdk-11
@@ -24,14 +24,15 @@ ARG GRADLE_VERSION=6.5.1
 ARG GRADLE_HOME=/usr/local/gradle
 
 COPY maven-settings.xml ${MAVEN_HOME}/ref/
+COPY ohmyzsh.sh /tmp/
 
 # Configure apt
 RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
+    && apt-get -y install --no-install-recommends apt-utils dialog zsh jq 2>&1 \
     #
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
     && groupadd --gid $USER_GID $USERNAME \
-    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && useradd -s /bin/zsh --uid $USER_UID --gid $USER_GID -m $USERNAME \
     # [Optional] Add sudo support for the non-root user
     && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
@@ -41,7 +42,7 @@ RUN apt-get update \
     && apt-get -y install git openssh-client less iproute2 procps curl lsb-release unzip vim jq \
     #
     # add bin dir
-    && mkdir /home/${USERNAME}/bin \
+    && sudo -u ${USERNAME} mkdir /home/${USERNAME}/bin \
     #
     # Install Maven
     && mkdir -p ${MAVEN_HOME} ${MAVEN_HOME}/ref \
@@ -68,12 +69,17 @@ RUN apt-get update \
     && rm -rf /tmp/gradle-* \
     #
     # 设置环境变量
-    && echo "export JAVA_HOME=${JAVA_HOME}" >> /home/${USERNAME}/.bashrc \
-    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /home/${USERNAME}/.bashrc \
-    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /home/${USERNAME}/.bashrc \
-    && echo "export GRADLE_HOME=${GRADLE_HOME}" >> /home/${USERNAME}/.bashrc \
-    && echo "export PATH=${GRADLE_HOME}/bin:\$PATH" >> /home/${USERNAME}/.bashrc \
-    && echo "export PATH=/home/${USERNAME}/bin:\$PATH" >> /home/${USERNAME}/.bashrc \
+    && echo "export JAVA_HOME=${JAVA_HOME}" >> /home/${USERNAME}/.envrc \
+    && echo "export CATALINA_HOME=${CATALINA_HOME}" >> /home/${USERNAME}/.envrc \
+    && echo "export MAVEN_HOME=${MAVEN_HOME}" >> /home/${USERNAME}/.envrc \
+    && echo "export GRADLE_HOME=${GRADLE_HOME}" >> /home/${USERNAME}/.envrc \
+    && echo "export PATH=${GRADLE_HOME}/bin:\$PATH" >> /home/${USERNAME}/.envrc \
+    && echo "export PATH=/home/${USERNAME}/bin:\$PATH" >> /home/${USERNAME}/.envrc \
+    && sudo -u ${USERNAME} touch /home/${USERNAME}/.zshrc \
+    && echo ". ~/.envrc" > /home/${USERNAME}/.zshrc \
+    #
+    # add permissions
+    && chmod +x /tmp/ohmyzsh.sh \
     #
     # Clean up
     && apt-get autoremove -y \

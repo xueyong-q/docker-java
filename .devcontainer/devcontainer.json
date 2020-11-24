@@ -3,17 +3,17 @@
 	"dockerFile": "Dockerfile",
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash",
+		"terminal.integrated.shell.linux": "/bin/zsh",
 		"java.home": "/usr/local/openjdk-11"
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// 将容器内 8080 转发映射到主机 80
 	"appPort": [
-		"80:8080"
+		"8080:8080"
 	],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "java -version",
+	// install ohmyzsh
+	"postCreateCommand": "/tmp/ohmyzsh.sh &",
 	// Comment out to run as root instead.
 	"remoteUser": "vscode",
 	// Add the IDs of extensions you want installed when the container is created.
