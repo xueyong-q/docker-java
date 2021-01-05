@@ -1,22 +1,46 @@
 {
 	"name": "Java",
 	"dockerFile": "Dockerfile",
-	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/zsh",
-		"java.home": "/usr/local/openjdk-11"
+		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// 将容器内 8080 转发映射到主机 80
+	"build": {
+		// 构建 Dockerfile 时的环境变量
+		"args": {
+			// JAVA 镜像版本
+			"JAVA_VERSION": "11-jdk",
+			// 在容器中运行的用户
+			"USERNAME": "vscode",
+			// 运行用户的 UID
+			"USER_UID": "1000",
+			"LANG": "C.UTF-8",
+			// maven 版本
+			"MAVEN_VERSION": "3.6.3",
+			// maven 安装包的 sha512 值
+			"MAVEN_SHA": "c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0",
+			// maven 的 Home 目录
+			"MAVEN_HOME": "/usr/local/maven",
+			// tomcat 版本
+			"TOMCAT_VERSION": "9.0.41",
+			// tomcat 安装包的 sha512 值
+			"TOMCAT_SHA": "b6450e590a37c5bccf049b1176c441f0964796995e80d4c7c7d9fb74f9ad817107c303b6b83ed3d71c9251b2b8acf334b90a4abdf9deea122e338643cece0766",
+			// tomcat 的 Home 目录
+			"CATALINA_HOME": "/usr/local/tomcat",
+			// gradle 版本
+			"GRADLE_VERSION": "6.5.1",
+			// gradle 的 Home 目录
+			"GRADLE_HOME": "/usr/local/gradle"
+		}
+	},
+	// 映射端口 <主机端口>:<容器端口>
 	"appPort": [
 		"8080:8080"
 	],
 	// install ohmyzsh
 	"postCreateCommand": "/tmp/ohmyzsh.sh &",
-	// Comment out to run as root instead.
+	// 在容器中运行的用户
 	"remoteUser": "vscode",
-	// Add the IDs of extensions you want installed when the container is created.
+	// 安装 vscode 扩展
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"pivotal.vscode-boot-dev-pack",

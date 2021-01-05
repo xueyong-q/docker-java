@@ -17,7 +17,7 @@
 ## 开始使用
 
 注意：该项目容器默认会添加到 database_app 网络，如果 database_app 网络不存在则会无法构建，解决方法如：  
-1. 删除 `.devcontainer\devcontainer.json` 配置文件中 `runArgs` 配置项的 "--network=database_app" 即可。  
+1. 删除 `.devcontainer\devcontainer.json` 配置文件中 `runArgs` 配置项的 `--network=database_app` 即可。  
 2. 添加 database_app 网络，添加命令 `docker network create database_app`。另可以部署一个数据库 [docker-database 项目](https://github.com/xueyong-q/docker-database.git)。  
 
 首先使用 VSCode 打开本项目，操作如下。   
@@ -38,17 +38,16 @@ mvn archetype:generate -DgroupId=com.project.app -DartifactId=app-model -Dversio
 执行 `tomcatup` 命令启动 tomcat，关闭则执行 `tomcatdown` 命令。
 
 启动后则可以使用主机的 http://localhost:8080 访问 tomcat。  
->如要修改端口映射，可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项，配置值如：`<主机端口>:<容器内端口>`。  
+如要修改端口映射，可以修改 `.devcontainer\devcontainer.json` 配置文件中 `appPort` 配置项。  
+构建 Dockerfile 时的环境变量则在 `build.args` 中修改。  
 
-或者使用 Community Server Connectors 扩展管理 tomcat。  
+也可使用 Community Server Connectors 扩展管理 tomcat。  
 
 ## 更换版本
 
-如果需要更换 JDK 的版本只需要修改 devcontainer.json 和 Dockerfile 这两个文件。  
-* devcontainer.json 文件修改 java.home 配置项，将地址更换成对应版本的地址即可，如：当前版本是 11，更换为 8 版本的话只需将 11 改为 8 即可。  
-* Dockerfile 文件修改 FROM 配置项，也是换成对应版本镜像即可，如：当前版本是 11，更换为 8 版本的话也是将 11 改为 8 即可，另还需要设置 ARG 配置项的 JAVA_HOME 环境变量地址，该值应与 java.home 配置一致。  
+如果需要更换 JDK 的版本只需要修改 `devcontainer.json` 文件中 `build.args` 选项下的 `JAVA_VERSION` 环境变量即可，将该变量替换成你需要的镜像版本号。   
 
-## VSCode扩展
+## VSCode 扩展
 
 | 扩展名称                    | 描述 |
 | --------------------------- | ---- |
